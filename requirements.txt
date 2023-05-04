@@ -1,0 +1,12 @@
+# Flask Framework
+Flask
+requests
+
+# Flask Packages
+Flask-Login
+Flask-Migrate
+Flask-Script
+Flask-SQLAlchemy
+Flask-WTF
+Flask-Bcrypt
+DateTime
