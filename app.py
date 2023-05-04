@@ -54,6 +54,13 @@ class User(db.Model, UserMixin):
     gender = db.Column(db.String(10), nullable=False)
     is_doctor = db.Column(db.Boolean, default=False, nullable=False)
     mobile = db.Column(db.Integer)
+    medical_conditions = db.Column(db.String(100), default="", nullable=False)
+    allergies = db.Column(db.String(100), default="", nullable=False)
+    medications = db.Column(db.String(100), default="", nullable=False)
+    vaccine_history = db.Column(db.String(100), default="", nullable=False)
+    family_history = db.Column(db.String(100), default="", nullable=False)
+    surgical_history = db.Column(db.String(100), default="", nullable=False)
+    lifestyle_habits = db.Column(db.String(100), default="", nullable=False)
         
 class Doctor(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -258,8 +265,25 @@ def myappointments(id=None):
 @app.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile():
-    form = MedicalHistoryForm()
+    form = MedicalHistoryForm(obj=current_user)
     return render_template("profile.html", form=form)
+
+
+@app.route("/medical_history", methods=['POST'])
+@login_required
+def medical_history():
+    """ medical_conditions = request.form.medical_conditions
+    allergies = request.form.allergies
+    medications = request.form.medications
+    vaccine_history = request.form.vaccine_history
+    family_history = request.form.family_history
+    surgical_history = request.form.surgical_history
+    lifestyle_habits = request.form.lifestyle_habits """
+    form = MedicalHistoryForm()
+    form.populate_obj(current_user)
+    db.session.commit()
+    return redirect(url_for('profile'))
+
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
