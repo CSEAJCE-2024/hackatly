@@ -11,6 +11,10 @@ Appointment
         <div class="h-100 pt-3 d-flex align-items-center justify-content-center">
             <form method="post" class="form-control w-75">
                 {{ form.hidden_tag() }}
+                <h5>{{ form.docDept.label }}</h5>
+                <div class="col-xs-4 mb-3">
+                    {{ form.docDept(class = "form-control") }}
+                </div>
                 <h5>{{ form.slot.label }}</h5> 
                 <div class="col-xs-4 mb-3">
                     {{ form.slot(class = "form-control") }}
