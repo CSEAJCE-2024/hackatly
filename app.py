@@ -73,6 +73,11 @@ class Appointment(db.Model):
     date = db.Column(db.Date, nullable=False)
     status = db.Column(db.Boolean, default=False, nullable=False)
 
+class Drivers(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    tel_id = db.Column(db.Integer, nullable = False)
+    name = db.Column(db.String, nullable = False)
+
 
 # ****** FORMS *******
 
