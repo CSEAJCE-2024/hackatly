@@ -21,7 +21,7 @@ def start(message):
     keyboard = types.InlineKeyboardMarkup(row_width = 2)
     emergency = types.InlineKeyboardButton("Emergency 🆘", callback_data='emergency')
     hospitals = types.InlineKeyboardButton("Hospitals 🏥", callback_data='hospital')
-    appointment = types.InlineKeyboardButton("Appointment 🩺", url='https://google.com')
+    appointment = types.InlineKeyboardButton("Appointment 🩺", url='http://127.0.0.1:5000/appointment')
     keyboard.add(emergency, hospitals, appointment)
 
     bot.send_message(message.chat.id, "Welcome to Life Bot!😊 \n\n I am here to help you with your emergency needs and services.⚕️🩸 \n\n What may I assist you with?", reply_markup=keyboard)
