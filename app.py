@@ -335,7 +335,6 @@ def inject_datetime():
 def save():
     try:
         request_json = request.get_json()
-        print(request_json)
         lat = request_json['lat']
         long = request_json['long']
         new_location = Location(latitude=lat, longitude=long)
