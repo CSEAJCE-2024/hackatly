@@ -1,11 +1,11 @@
 import telebot, os
 from telebot import types
 import requests
+
 # Create a new bot instance
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 bot = telebot.TeleBot(BOT_TOKEN)
-
-
+print(bot)
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -29,7 +29,7 @@ def handle_emergency(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callback(call):
-    if call.data == 'fever' or call.data == 'breathing' or call.data == 'heartache' or call.data == 'stomach_pain' or call.data == 'others':
+    if call.data in ['fever', 'breathing', 'heartache', 'stomach_pain', 'others']:
         # Request user's location
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
         location_button = types.KeyboardButton(text="Send Location", request_location=True)
