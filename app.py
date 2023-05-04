@@ -138,6 +138,16 @@ class AppointmentForm(FlaskForm):
     date = DateField("Appointment Date",validators=[InputRequired()])
     submit = SubmitField("Book Appointment",validators=[InputRequired()])
 
+class MedicalHistoryForm(FlaskForm):
+    medical_conditions = StringField(validators=[Length(max=200)], render_kw={"placeholder": "Medical Conditions"}, name='medical_conditions')
+    allergies = StringField(validators=[Length(max=200)], render_kw={"placeholder": "Allergies"}, name='allergies')
+    medications = StringField(validators=[Length(max=200)], render_kw={"placeholder": "Medications"}, name='medications')
+    vaccine_history = StringField(validators=[Length(max=200)], render_kw={"placeholder": "Vaccine History"}, name='vaccine_history')
+    family_history = StringField(validators=[Length(max=200)], render_kw={"placeholder": "Family History"}, name='family_history')
+    surgical_history = StringField(validators=[Length(max=200)], render_kw={"placeholder": "Surgical History"}, name='surgical_history')
+    lifestyle_habits = StringField(validators=[Length(max=200)], render_kw={"placeholder": "Lifestyle Habits"}, name='lifestyle_habits')
+    submit = SubmitField("Submit",validators=[InputRequired()])
+
 class LoginForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)])
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)])
@@ -257,7 +267,8 @@ def myappointments(id=None):
 @app.route("/profile", methods=['GET', 'POST'])
 @login_required
 def profile():
-    return render_template("profile.html")
+    form = MedicalHistoryForm()
+    return render_template("profile.html", form=form)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
