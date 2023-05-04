@@ -413,7 +413,15 @@ def registerDriver():
 
 @app.route('/getHospital', methods = ['GET'])
 def getHospital():
-    ...
+    hospitals = Hospital.query.all()
+    hospital_list = []
+    for hospital in hospitals:
+        hosp_dict = {
+            'name': hospital.name,
+            'mobile': hospital.mobile
+        }
+        hospital_list.append(hosp_dict)
+    return jsonify(hospital_list)
 
 @app.route("/getDriver", methods = ['GET'])
 def getDriver():
