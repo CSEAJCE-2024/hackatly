@@ -1,6 +1,7 @@
 import telebot, os
 from telebot import types
 import requests
+
 # Create a new bot instance
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 bot = telebot.TeleBot(BOT_TOKEN)
@@ -27,6 +28,15 @@ def handle_emergency(message):
 
     bot.send_message(message.chat.id, 'Please select the type of medical emergency:', reply_markup=keyboard)
 
+@bot.callback_query_handler(func=lambda call: True)
+def handle_callback(call):
+    if call.data in ['fever', 'breathing', 'heartache', 'stomach_pain', 'others']:
+        # Request user's location
+        markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+        location_button = types.KeyboardButton(text="Send Location", request_location=True)
+        markup.add(location_button)
+
+        bot.send_message(call.message.chat.id, "Please share your location:", reply_markup=markup)
 
 
 @bot.message_handler(content_types=['location'])
