@@ -66,6 +66,15 @@ class Location(db.Model, UserMixin):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
 
+class Hospital(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+    mobile = db.Column(db.Integer)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    category = db.Column(db.String(10), nullable=False)
+
+    
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -366,6 +375,24 @@ def registerDriver():
         })
     except Exception as e:
         return e
+
+@app.route('/getHospital', methods = ['GET'])
+def getHospital():
+    ...
+
+@app.route("/getDriver", methods = ['GET'])
+def getDriver():
+    driver = Drivers.query.all()
+    driver_list = []
+    for driver in driver:
+        driver_dict = {
+            'id': driver.id,
+            'tel_id': driver.tel_id,
+            'name': driver.name,
+        }
+        driver_list.append(driver_dict)
+    print(jsonify(driver_list))
+    return jsonify(driver_list)
 
 if __name__ == "__main__":
     with app.app_context():

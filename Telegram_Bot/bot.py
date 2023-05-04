@@ -15,14 +15,14 @@ def start(message):
 def handle_emergency(message):
     # Create emergency options as inline buttons
     keyboard = types.InlineKeyboardMarkup(row_width=2)
-    fever = types.InlineKeyboardButton('Fever', callback_data='fever')
+    poison = types.InlineKeyboardButton('Poisoning', callback_data='poison')
     breathing_difficulty = types.InlineKeyboardButton('Breathing Difficulty', callback_data='breathing')
     heartache = types.InlineKeyboardButton('Heart Ache', callback_data='heart')
     stomach_pain = types.InlineKeyboardButton('Stomach Pain', callback_data='stomach')
     others = types.InlineKeyboardButton('Others....', callback_data='others')
 
     # Add emergency options to the keyboard
-    keyboard.add(fever, breathing_difficulty, heartache, stomach_pain, others)
+    keyboard.add(poison, breathing_difficulty, heartache, stomach_pain, others)
 
     bot.send_message(message.chat.id, 'Please select the type of medical emergency:', reply_markup=keyboard)
 
@@ -73,13 +73,42 @@ def get_name(message):
         
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callback(call):
-    if call.data in ['fever', 'breathing', 'heartache', 'stomach_pain', 'others']:
+    if call.data in ['poison', 'breathing', 'heartache', 'stomach_pain', 'others']:
         # Request user's location
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
         location_button = types.KeyboardButton(text="Send Location", request_location=True)
         markup.add(location_button)
 
         bot.send_message(call.message.chat.id, "Please share your location:", reply_markup=markup)
+        bot.register_next_step_handler(call.message, getDriver)
+        # @bot.message_handler(content_types=['location'])
+    elif call.data in ['yes', 'no']:
+        if call.data == 'yes':
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+            driver_avail(call.message.chat.id)
+        elif call.data == 'no':
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+            bot.send_message(call.message.chat.id, "Alert Removed")
 
+def driver_avail(chat_id):
+    bot.send_message(chat_id, "You responded with yes")
+
+def getDriver(message):
+    # Send GET request to the server with location parameters
+    lat = message.location.latitude
+    long = message.location.longitude
+    url = f"http://127.0.0.1:5000/getDriver"
+    response = requests.get(url)
+    details = response.json()
+    for detail in details:
+        chat_id = detail['tel_id']
+        name = detail['name']
+        msg = f"Hello {name} there is an alert nearby!! Please repond weather you are available or not!"
+        markup = types.InlineKeyboardMarkup(row_width=2)
+        yes_btn = types.InlineKeyboardButton("Yes", callback_data='yes')
+        no_btn = types.InlineKeyboardButton("No", callback_data='no')
+        markup.add(yes_btn, no_btn)
+        bot.send_location(chat_id, lat, long)
+        bot.send_message(chat_id, msg, reply_markup=markup)
 # Start the bot
 bot.polling()
