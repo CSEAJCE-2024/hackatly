@@ -351,6 +351,21 @@ def save():
         })
     except Exception as e:
         return e
+    
+@app.route('/registerDriver', methods = ['POST'])
+def registerDriver():
+    try:
+        request_json = request.get_json()
+        name = request_json['name']
+        tel_id = request_json['tel_id']
+        new_driver = Drivers(name=name, tel_id=tel_id)
+        db.session.add(new_driver)
+        db.session.commit()
+        return jsonify({
+            "status": "Successfully registered the driver!"
+        })
+    except Exception as e:
+        return e
 
 if __name__ == "__main__":
     with app.app_context():

@@ -6,8 +6,6 @@ import requests
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 bot = telebot.TeleBot(BOT_TOKEN)
 
-
-
 @bot.message_handler(commands=['start'])
 def start(message):
     # Send the welcome message
@@ -62,15 +60,15 @@ def get_name(message):
     name = message.text
 
     data = {
-        'name': name
+        'name': name,
+        'tel_id': message.chat.id
     }
 
     url = 'http://127.0.0.1:5000/registerDriver'  # Replace with your actual URL
     response = requests.post(url, json=data)
 
-    print(response.json())
     # Send a confirmation message to the user
-    bot.send_message(message.chat.id, f"Thanks for registering, {name}!")
+    bot.send_message(message.chat.id, f"Thanks for registering, {name}! {response.json()['status']}")
 
         
 @bot.callback_query_handler(func=lambda call: True)
