@@ -120,6 +120,7 @@ class EditForm(FlaskForm):
 
 class AppointmentForm(FlaskForm):
     slot = SelectField("Appointment Slot", choices=[("morning", "Morning (9am-12pm)"), ("afternoon", "Afternoon (1pm-4pm)"), ("evening", "Evening (5pm-8pm)")], validators=[InputRequired()])
+    docDept = SelectField("Select Doctor Department", choices=[("practitioner","General Practitioner"),("cardiologist", "Cardiologist"), ("pediatrician", "Pediatrician"), ("dermatologist","Dermatologist"), ("dentist", "Dentist")])
     date = DateField("Appointment Date",validators=[InputRequired()])
     submit = SubmitField("Book Appointment",validators=[InputRequired()])
 
