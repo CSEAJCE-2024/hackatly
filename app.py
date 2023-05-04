@@ -73,6 +73,9 @@ class Appointment(db.Model):
     date = db.Column(db.Date, nullable=False)
     status = db.Column(db.Boolean, default=False, nullable=False)
 
+class Drivers(db.Model):
+    ...
+
 
 # ****** FORMS *******
 
