@@ -168,10 +168,21 @@ User - Appointments
                   <div class="col-4"><p><b>Gender: </b>{{ a.User.gender }}</p></div>
                 </div>
                 <div class="row">
+                  <div class="row">
+                    <div class="col"><strong>Patient Symptoms and Predicted Disaease</strong>   <i class="fas fa-pen fa-fw me-3"></i></div>
+                  </div>
+                  <hr>
+                </div>
+                {% if disease %}
+                <p>
+                  Symptoms: {{ disease.symptoms }}
+                  Prediction: {{ disease.predicted_disease }}
+                </p>
+                {% endif %}
+                <div class="row">
                   <div class="col"><strong>Enter Consultation Details</strong>   <i class="fas fa-pen fa-fw me-3"></i></div>
                 </div>
-                <hr>
-                <textarea name="Enter here..." id="" cols="50" class="mb-4"></textarea>
+                <textarea value="Enter here..." id="" cols="50" class="mb-4"></textarea>
 
                 <div class="row">
                   <div class="col"><strong>Select Prescription</strong>   <i class="fas fa-capsules fa-fw me-3"></i></div>

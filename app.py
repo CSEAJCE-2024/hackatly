@@ -281,12 +281,13 @@ def myappointments(id=None):
         }, value=Appointment.slot)).all()
     else:
         appointments = Appointment.query.filter_by(user_id = current_user.id).all()
-
+    disease = None
     appointment = None
     if id is not None:
         appointment = db.session.query(Appointment, User).join(User).filter(Appointment.id == id).all()
+        disease = Symptoms.query.filter_by(appointment_id = id).first()
     hospital = db.session.query(Appointment, Hospital).join(Hospital).all()
-    return render_template("myappointments.html", appointments=appointments, appointment=appointment, id=id, hospitals=hospital)
+    return render_template("myappointments.html", appointments=appointments, appointment=appointment, id=id, hospitals=hospital, disease = disease)
 
 # PROFILE
 @app.route("/profile", methods=['GET', 'POST'])
