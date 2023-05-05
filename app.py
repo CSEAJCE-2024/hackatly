@@ -96,6 +96,10 @@ class Drivers(db.Model):
     tel_id = db.Column(db.Integer, nullable = False)
     name = db.Column(db.String, nullable = False)
 
+class VideoCall(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    video_id = db.Column(db.String, nullable = False)
+
 
 # ****** FORMS *******
 
@@ -450,6 +454,17 @@ def getDriver():
         driver_list.append(driver_dict)
     print(jsonify(driver_list))
     return jsonify(driver_list)
+
+@app.route("/videostart", methods = ['POST'])
+def videostart():
+    request_json = request.get_json()
+    video_id = request_json['video_id']
+    vc = VideoCall(video_id=video_id)
+    db.session.add(vc)
+    db.session.commit()
+    return jsonify({
+        'status': 200
+    })
 
 if __name__ == "__main__":
     with app.app_context():
