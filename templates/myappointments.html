@@ -175,7 +175,14 @@ User - Appointments
                 </div>
                 {% if disease %}
                 <p>
-                  Symptoms: {{ disease.symptoms }}
+                  Symptoms: 
+                  <ul>
+                  {% for i in symptoms %}
+                    <li>{{ i }}</li>
+                  {% endfor %}
+                  </ul>
+                </p>
+                <p>
                   Prediction: {{ disease.predicted_disease }}
                 </p>
                 {% endif %}
