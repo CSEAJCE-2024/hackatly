@@ -184,8 +184,7 @@ def doctorRegister():
     form = Doc_RegisterForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password, name=form.name.data, dob=form.dob.data, gender=form.gender.data, is_doctor = True)
-
+        new_user = User(username=form.username.data, password=hashed_password, name=form.name.data, dob=form.dob.data, gender=form.gender.data, is_doctor = True, insurance = "Doctor Insurance")
         db.session.add(new_user)
         db.session.commit()
         flash("You have successfully registered! Please login to continue.")
