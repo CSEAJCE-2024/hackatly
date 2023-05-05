@@ -8,7 +8,7 @@ from wtforms.validators import *
 from flask_bcrypt import Bcrypt
 from datetime import datetime, date
 from sqlalchemy.sql import func
-
+import random
 app = Flask(__name__)
 app.debug = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.sqlite'
@@ -83,6 +83,7 @@ class Hospital(db.Model):
     longitude = db.Column(db.Float, nullable=False)
     category = db.Column(db.String(10), nullable=False)
     accepted_insurance = db.Column(db.String(20), nullable=False)
+    ratings = db.Column(db.Integer, nullable = False)
     
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -282,6 +283,7 @@ class EditForm(FlaskForm):
 class AppointmentForm(FlaskForm):
     slot = SelectField("Appointment Slot", choices=[("morning", "Morning (9am-12pm)"), ("afternoon", "Afternoon (1pm-4pm) Peak time"), ("evening", "Evening (5pm-8pm)")], validators=[InputRequired()])
     docDept = SelectField("Select Doctor Department", choices=[("practitioner","General Practitioner"),("cardiologist", "Cardiologist"), ("pediatrician", "Pediatrician"), ("dermatologist","Dermatologist"), ("dentist", "Dentist")])
+    docName = SelectField("Select Doctor", choices=[('doctor1', 'Dr. John Blake'), ('doctor2', 'Dr. Ram Kumar')])
     date = DateField("Appointment Date",validators=[InputRequired()])
     submit = SubmitField("Book Appointment",validators=[InputRequired()])
 
@@ -480,6 +482,23 @@ def viewpatient(id):
 @app.route("/appointment", methods=["GET", "POST"])
 @login_required
 def appointment():
+
+    image_urls =[
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvp4fRP0z_n7aGQlOPqy4odkguvV5-gz5E6fMnoa4F7NU1J8Y7T3gxzPxGjzg9gZDgSms&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCUaHd-IXCbYDJMTQGeikLyQuzDMX-zSz8iAQ4fxJyhfv-3czWAeqt9q0WvI7CnGYCYWw&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXQicZ3Hqf1JPXm9hR3IOv74H590fsZUBsHQ&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLrN0yIhXzu8SokLj7H7DSANmXPFZmQ-5A_Q8_Isr2WoKf3WAfheodxbbJWOmPXA8Vikk&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvV20C8_tKXoenQdXQmQUI3vUXr8Z9KoXW0wPcalm4BMKLPEGVpaFvjf2fDYIiT5njx4s&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS825lZxPEE8OxWxZo-1r6cJA5Ybbi2w-tH4K4cn6NrkCQksuPuSkTTNX30AMwfPwrEfAc&usqp=CAU"
+
+    ]
+    ratings = Hospital.query.order_by(Hospital.ratings.desc()).all()
+    random.shuffle(image_urls)
+    return render_template("appointment.html", image_urls = image_urls, ratings = ratings)
+
+@app.route("/appointment/bookappointment/<int:id>", methods=["GET", "POST"])
+@login_required
+def bookappointment(id):
     form = AppointmentForm()
     if form.validate_on_submit():
         hospital_id = request.form['hospital_id']
@@ -492,9 +511,8 @@ def appointment():
     hospitals = Hospital.query.all()
     slots = Appointment.query.group_by(Appointment.slot).order_by(func.count().desc()).all()
     max_booked_slot = slots[0].slot if slots else None
-    return render_template("appointment.html", form=form, hospitals=hospitals, max_booked_slot=max_booked_slot)
 
-
+    return render_template("bookappointment.html", hosp_id = id, form=form, hospitals=hospitals, max_booked_slot=max_booked_slot)
 
 @app.route('/delete_appointment/<int:id>', methods=['POST','GET'])
 @login_required
