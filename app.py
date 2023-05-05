@@ -286,8 +286,9 @@ def myappointments(id=None):
     if id is not None:
         appointment = db.session.query(Appointment, User).join(User).filter(Appointment.id == id).all()
         disease = Symptoms.query.filter_by(appointment_id = id).first()
+        symptoms = disease.symptoms.split(',')
     hospital = db.session.query(Appointment, Hospital).join(Hospital).all()
-    return render_template("myappointments.html", appointments=appointments, appointment=appointment, id=id, hospitals=hospital, disease = disease)
+    return render_template("myappointments.html", appointments=appointments, appointment=appointment, id=id, hospitals=hospital, disease = disease, symptoms=symptoms)
 
 # PROFILE
 @app.route("/profile", methods=['GET', 'POST'])
