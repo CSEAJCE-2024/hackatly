@@ -42,7 +42,6 @@ def order_by_slot(appointment):
     return {'morning': 1, 'afternoon': 2, 'evening': 3}[appointment.slot]
 
 # PORGRAM MODELS
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False, unique=True)
@@ -62,6 +61,7 @@ class User(db.Model, UserMixin):
     surgical_history = db.Column(db.String(100), default="", nullable=False)
     lifestyle_habits = db.Column(db.String(100), default="", nullable=False)
     isFastrack = db.Column(db.Integer, default = 0, nullable = True)
+    insurance = db.Column(db.String(20), nullable=False)
         
 class Doctor(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -81,7 +81,7 @@ class Hospital(db.Model):
     latitude = db.Column(db.Float, nullable=False)
     longitude = db.Column(db.Float, nullable=False)
     category = db.Column(db.String(10), nullable=False)
-
+    accepted_insurance = db.Column(db.String(20), nullable=False)
     
 class Appointment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -115,7 +115,7 @@ class RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "User Name"})
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
     name = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Full Name"})
-    gender = RadioField('Gender', choices=[('Male'),('Female'),('Other')])
+    gender = RadioField('Gender', choices=[('Male'),('Female')])
     address = StringField(validators=[InputRequired(), Length(min=4, max=100)], render_kw={"placeholder": "Address"})
     mobile = StringField(validators=[InputRequired(), Length(min=10, max=12)], render_kw={"placeholder": "Mobile No."})
     city = StringField(validators=[InputRequired(), Length(min=4, max=30)], render_kw={"placeholder": "City"})
@@ -167,14 +167,16 @@ class LoginForm(FlaskForm):
 def register():
     form = RegisterForm()
     if form.validate_on_submit():
+        insurance = request.form["insurance"]
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password, name=form.name.data, address = form.address.data, city = form.city.data, dob=form.dob.data,gender=form.gender.data, is_doctor = False, mobile = form.mobile.data)
+        new_user = User(username=form.username.data, password=hashed_password, name=form.name.data, address = form.address.data, city = form.city.data, dob=form.dob.data,gender=form.gender.data, is_doctor = False, mobile = form.mobile.data, insurance=insurance)
         db.session.add(new_user)
         db.session.commit()
         flash("You have successfully registered! Please login to continue.")
         return redirect(url_for('userlogin'))
     
-    return render_template("register.html", form=form)
+    insurances = Hospital.query.all()
+    return render_template("register.html", form=form, insurances=insurances)
 
 @app.route("/doctorRegister", methods=['GET','POST'])
 def doctorRegister():
