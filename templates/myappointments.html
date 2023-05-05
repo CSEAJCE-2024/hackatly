@@ -12,7 +12,7 @@ User - Appointments
     <div class="card">
       <div class="card-header text-center py-3">
         <h5 class="mb-0 text-center">
-          <strong>Current Appointments</strong>
+          <strong>Todays Appointments</strong>
         </h5>
       </div>
       {% if current_user.is_doctor %}
@@ -21,7 +21,7 @@ User - Appointments
           <table class="table table-hover text-nowrap">
             <thead>
               <tr>
-                <th scope="col">Appointment No.</th>
+                <!-- <th scope="col">Appointment No.</th> -->
                 <th scope="col">Patient Name</th>
                 <th scope="col">FastTrack</th>
                 <th scope="col">Age</th>
@@ -44,7 +44,7 @@ User - Appointments
               {% endfor %}
               {% for appointment in fasttrack_appointments %}
                 <tr id="{{ loop.index }}">
-                  <td>{{ loop.index }}</td>
+                  <!-- <td>{{ loop.index }}</td> -->
                   <td>{{ appointment.User.name }}</td>
                   <td>
                     <a class="text-danger">FastTrack</a>
@@ -62,7 +62,7 @@ User - Appointments
               {% endfor %}
               {% for appointment in regular_appointments %}
                 <tr id="{{ loop.index }}">
-                  <td>{{ loop.index + loop.length  }}</td>
+                  <!-- <td>{{ loop.index + loop.length  }}</td> -->
                   <td>{{ appointment.User.name }}</td>
                   <td>
                     {% if appointment.User.isFastrack %}
@@ -81,7 +81,7 @@ User - Appointments
                       <a  href="{{ url_for('myappointments') }}"><i class="fas fa-minus fa-fw me-3"></i></a>
                     </span>
                   </td>
-                  <td><a href="https://hackatly-doctor-consult.vercel.app" _target="blank" class="btn btn-primary">Start</a></td>
+                  <td><a href="https://hackatly-doctor-consult.vercel.app" target="_blank" class="btn btn-primary">Start</a></td>
                 </tr> 
               {% endfor %}
             </tbody>
@@ -114,7 +114,7 @@ User - Appointments
                     <a href="/delete_appointment/{{ appointment.id }}"><i class="fas fa-trash fa-fw me-3"></i></a> 
                     <a href="/preconsult/{{ appointment.id }}" class="btn btn-primary">Preconsult</a> 
                   </td>
-                  <td><a href="https://hackatly-doctor-consult.vercel.app" _target="blank" class="btn btn-primary">Start</a></td>
+                  <td><a href="https://hackatly-doctor-consult.vercel.app" target="_blank" class="btn btn-primary">Start</a></td>
                 </tr> 
               {% endfor %}
             </tbody>
