@@ -88,6 +88,7 @@ class Appointment(db.Model):
     slot = db.Column(db.String(50), nullable=False)
     date = db.Column(db.Date, nullable=False)
     status = db.Column(db.Boolean, default=False, nullable=False)
+    hospital_id = db.Column(db.Integer, db.ForeignKey('hospital.id'), nullable=False)
 
 class Drivers(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -140,7 +141,7 @@ class EditForm(FlaskForm):
 
 
 class AppointmentForm(FlaskForm):
-    slot = SelectField("Appointment Slot", choices=[("morning", "Morning (9am-12pm)"), ("afternoon", "Afternoon (1pm-4pm)"), ("evening", "Evening (5pm-8pm)")], validators=[InputRequired()])
+    slot = SelectField("Appointment Slot", choices=[("morning", "Morning (9am-12pm)"), ("afternoon", "Afternoon (1pm-4pm) Peak time"), ("evening", "Evening (5pm-8pm)")], validators=[InputRequired()])
     docDept = SelectField("Select Doctor Department", choices=[("practitioner","General Practitioner"),("cardiologist", "Cardiologist"), ("pediatrician", "Pediatrician"), ("dermatologist","Dermatologist"), ("dentist", "Dentist")])
     date = DateField("Appointment Date",validators=[InputRequired()])
     submit = SubmitField("Book Appointment",validators=[InputRequired()])
@@ -268,7 +269,8 @@ def myappointments(id=None):
     appointment = None
     if id is not None:
         appointment = db.session.query(Appointment, User).join(User).filter(Appointment.id == id).all()
-    return render_template("myappointments.html", appointments=appointments, appointment=appointment, id=id)
+    hospital = db.session.query(Appointment, Hospital).join(Hospital).all()
+    return render_template("myappointments.html", appointments=appointments, appointment=appointment, id=id, hospitals=hospital)
 
 # PROFILE
 @app.route("/profile", methods=['GET', 'POST'])
@@ -340,13 +342,15 @@ def viewpatient(id):
 def appointment():
     form = AppointmentForm()
     if form.validate_on_submit():
+        hospital_id = request.form['hospital_id']
         slot = form.slot.data
         date = form.date.data
-        appointment = Appointment(user_id = current_user.id, slot=slot, date=date, status=False)
+        appointment = Appointment(user_id = current_user.id, slot=slot, date=date, status=False, hospital_id=hospital_id)
         db.session.add(appointment)
         db.session.commit()
         return redirect(url_for("myappointments"))
-    return render_template("appointment.html", form=form)
+    hospitals = Hospital.query.all()
+    return render_template("appointment.html", form=form, hospitals=hospitals)
 
 
 
