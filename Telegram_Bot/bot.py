@@ -6,12 +6,40 @@ import requests
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 bot = telebot.TeleBot(BOT_TOKEN)
 
+@bot.message_handler(func=lambda message: message.text and not message.text.startswith('/'))
+def handle_user_input(message):
+    if not message.text:
+        # Skip empty messages
+        return
+
+    # Your default message handling logic
+    bot.send_message(message.chat.id, "Get started with LifeBot by using the /start command 😊")
+
 @bot.message_handler(commands=['start'])
 def start(message):
     # Send the welcome message
-    bot.send_message(message.chat.id, "Welcome to Life Bot! I am here to help you with your emergency needs and services. Use /emergency command so that I can assist you with your needs.")
+    keyboard = types.InlineKeyboardMarkup(row_width = 2)
+    emergency = types.InlineKeyboardButton("Emergency 🆘", callback_data='emergency')
+    hospitals = types.InlineKeyboardButton("Hospitals 🏥", callback_data='hospital')
+    appointment = types.InlineKeyboardButton("Appointment 🩺", url='http://127.0.0.1:5000/appointment')
+    keyboard.add(emergency, hospitals, appointment)
 
-@bot.message_handler(commands=['emergency'])
+    bot.send_message(message.chat.id, f"Welcome to Life Bot!😊 \n\n I am here to help you with your emergency needs and services.⚕️🩸 \n\n What may I assist you with?\n\nYour Telegram ID: {message.chat.id}", reply_markup=keyboard)
+
+
+def handle_hospitals(message):
+    url = 'http://127.0.0.1:5000/getHospital' 
+    response = requests.get(url)
+    details = response.json()
+    bot.send_message(message.chat.id, "List of nearby Hospitals and Medical Services 🏥🩺")
+    for detail in details:
+        hospital_name = detail['name']
+        hospital_mobile = detail['mobile']
+
+        msg_text = f'Hospital: {hospital_name}\nContact: {hospital_mobile}'
+        bot.send_message(message.chat.id, msg_text)
+
+
 def handle_emergency(message):
     # Create emergency options as inline buttons
     keyboard = types.InlineKeyboardMarkup(row_width=2)
@@ -44,14 +72,14 @@ def handle_location(message):
     print(response.json())
 
     # Confirm the location with the user
-    bot.send_message(message.chat.id, f"Your location: Latitude: {latitude}, Longitude: {longitude}")
+    bot.send_message(message.chat.id, f"Your location: Latitude: {latitude}, Longitude: {longitude} 🗺️")
 
 # Register button handler
 
 @bot.message_handler(commands=['register'])
 def register_user(message):
     # Send the initial registration message and request for name
-    bot.send_message(message.chat.id, "Register yourself here")
+    bot.send_message(message.chat.id, "Register yourself here 🎯")
     bot.send_message(message.chat.id, "Please enter your name:")
 
     bot.register_next_step_handler(message, get_name)
@@ -68,12 +96,12 @@ def get_name(message):
     response = requests.post(url, json=data)
 
     # Send a confirmation message to the user
-    bot.send_message(message.chat.id, f"Thanks for registering, {name}! {response.json()['status']}")
+    bot.send_message(message.chat.id, f"Thanks for registering with us, {name}! {response.json()['status']} 😊")
 
         
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callback(call):
-    if call.data in ['poison', 'breathing', 'heartache', 'stomach_pain', 'others']:
+    if call.data in ['poison', 'breathing', 'heart', 'stomach', 'others']:
         # Request user's location
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
         location_button = types.KeyboardButton(text="Send Location", request_location=True)
@@ -82,6 +110,14 @@ def handle_callback(call):
         bot.send_message(call.message.chat.id, "Please share your location:", reply_markup=markup)
         bot.register_next_step_handler(call.message, getDriver)
         # @bot.message_handler(content_types=['location'])
+
+    elif call.data in ['emergency', 'hospital']:
+        if call.data == 'emergency':
+            handle_emergency(call.message)
+        elif call.data == 'hospital':
+            handle_hospitals(call.message)
+
+
     elif call.data in ['yes', 'no']:
         if call.data == 'yes':
             bot.delete_message(call.message.chat.id, call.message.message_id)
@@ -91,7 +127,10 @@ def handle_callback(call):
             bot.send_message(call.message.chat.id, "Alert Removed")
 
 def driver_avail(chat_id):
-    bot.send_message(chat_id, "You responded with yes")
+    bot.send_message(chat_id, "You responded with yes\nPlease contact the patient on: 9778130551")
+
+
+
 
 def getDriver(message):
     # Send GET request to the server with location parameters

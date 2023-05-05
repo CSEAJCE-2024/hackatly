@@ -4,6 +4,16 @@
     Home
 {% endblock %}
 
+{% block isactive %}
+<ul class="navbar-nav ms-auto pt-2 pt-lg-0">
+  <li class="nav-item"><a class="nav-link fw-bold active" aria-current="page" href="/">Home</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('doctorlogin') }}">Doctor Login</a></li>
+  <li class="nav-item"><a class="nav-link" href="{{ url_for('userlogin') }}">Book an Appointment</a></li>
+<li class="nav-item"><a class="nav-link" href="https://t.me/LifeHacktly_Bot"><button type="button"
+      class="btn btn-primary">Get LifeBot</button></a></li>
+</ul>
+{% endblock %}
+
 {% block main %}
 <section class="py-0">
     <div class="bg-holder" style="background-image:url(static/img/illustrations/dot.png);background-position:left;background-size:auto;margin-top:-105px;">
