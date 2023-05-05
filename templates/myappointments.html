@@ -178,7 +178,7 @@ User - Appointments
                   Symptoms: 
                   <ul>
                   {% for i in symptoms %}
-                    <li>{{ i }}</li>
+                    <li>{{ i|replace("_"," ") }}</li>
                   {% endfor %}
                   </ul>
                 </p>

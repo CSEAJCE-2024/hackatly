@@ -282,6 +282,7 @@ def myappointments(id=None):
     else:
         appointments = Appointment.query.filter_by(user_id = current_user.id).all()
     disease = None
+    symptoms = None
     appointment = None
     if id is not None:
         appointment = db.session.query(Appointment, User).join(User).filter(Appointment.id == id).all()
