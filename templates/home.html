@@ -143,12 +143,61 @@ User - Home
                       </div>
                     </div>
                   </div>
+              </div>
+              <div class="row">
+                <div class="card" style="width: 30rem;">
+                  <div class="card-body">
+                    <h5 class="card-title">FastTrack</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Your quick access to everwhere</h6>
+                    <p class="card-text">Get yourself the FastTrack subscription to skip long queues and breeze past everyone.</p>
+                    <a href="#" class="btn btn-success card-link ">Renew</a>
+                    <button type="button" class="btn btn-danger card-link launch" data-mdb-toggle="modal" data-mdb-target="#exampleModal">Buy</button >
+                  </div>
                 </div>
+              </div>
           </div>
         {% endif %}
 
     </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">FastTrack Payment</h5>
+        <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mt-4 mx-4">
+          <div class="text-center">
+            <h5>Credit card</h5>
+          </div>
+          <div class="form mt-3">
+            <div class="inputbox"> <input type="text" name="name" class="form-control" required="required">
+              <span>Cardholder Name</span> </div>
+            <div class="inputbox"> <input type="text" name="name" min="1" max="999" class="form-control"
+                required="required"> <span>Card Number</span> <i class="fa fa-eye"></i> </div>
+            <div class="d-flex flex-row">
+              <div class="inputbox px-2"> <input type="text" name="name" min="1" max="999" class="form-control"
+                  required="required"> <span>Expiration Date</span> 
+              </div>
+              <div class="inputbox"> 
+                <input type="text  px-2" name="name" min="1" max="999" class="form-control" required="required"> <span>CVV</span> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a href="{{ url_for('updateFastTrack') }}" class="btn btn-primary">Save changes</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 

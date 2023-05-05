@@ -61,6 +61,7 @@ class User(db.Model, UserMixin):
     family_history = db.Column(db.String(100), default="", nullable=False)
     surgical_history = db.Column(db.String(100), default="", nullable=False)
     lifestyle_habits = db.Column(db.String(100), default="", nullable=False)
+    isFastrack = db.Column(db.Integer, default = 0, nullable = True)
         
 class Doctor(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -100,7 +101,7 @@ class Drivers(db.Model):
 class Doc_RegisterForm(FlaskForm):
     username = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "User Name"})
     password = PasswordField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Password"})
-    fullname = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Full Name"})
+    name = StringField(validators=[InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Full Name"})
     gender = RadioField('Gender', choices=[('Male'),('Female'),('Other')])
     dob = DateField(validators=[InputRequired()],render_kw={"placeholder": "Date of Birth"})
     submit = SubmitField("Register")
@@ -379,6 +380,14 @@ def logout():
 def inject_datetime():
     return dict(datetime=datetime)
 
+
+@app.route("/updateFastTrack")
+@login_required
+def updateFastTrack():
+    user = User.query.get(current_user.id)
+    user.isFastrack = 1
+    db.session.commit()
+    return redirect(url_for('home'))
 
 @app.route('/save', methods = ['POST'])
 def save():
