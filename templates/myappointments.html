@@ -93,7 +93,7 @@ User - Appointments
         <div class="table-responsive">
           <table class="table table-hover text-nowrap">
             <thead>
-              <tr>
+              <tr class="text-center">
                 <th scope="col">Appointment No.</th>
                 <th scope="col">Appointment Date</th>
                 <th scope="col">Appointment Slot</th>
@@ -105,13 +105,14 @@ User - Appointments
             </thead>
             <tbody>
               {% for appointment,hospital in hospitals %}
-                <tr>
+                <tr class="text-center">
                   <td>{{ loop.index }}</td>
                   <td>{{ appointment.date.strftime('%d-%m-%Y') }}</td>
                   <td>{{ appointment.slot.capitalize() }}</td>
                   <td>{{ hospital.name }}</td>
                   <td>
                     <a href="/delete_appointment/{{ appointment.id }}"><i class="fas fa-trash fa-fw me-3"></i></a> 
+                    <a href="/preconsult/{{ appointment.id }}" class="btn btn-primary">Preconsult</a> 
                   </td>
                   <td><a href="https://hackatly-doctor-consult.vercel.app" _target="blank" class="btn btn-primary">Start</a></td>
                 </tr> 

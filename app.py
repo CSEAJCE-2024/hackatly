@@ -7,6 +7,7 @@ from wtforms import *#form creation
 from wtforms.validators import *
 from flask_bcrypt import Bcrypt
 from datetime import datetime, date
+from sqlalchemy.sql import func
 
 app = Flask(__name__)
 app.debug = True
@@ -96,6 +97,143 @@ class Drivers(db.Model):
     tel_id = db.Column(db.Integer, nullable = False)
     name = db.Column(db.String, nullable = False)
 
+class VideoCall(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    video_id = db.Column(db.String, nullable = False)
+
+class Symptoms(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    itching = db.Column(db.Boolean, default=False, nullable=False)
+    skin_rash = db.Column(db.Boolean, default=False, nullable=False)
+    nodal_skin_eruptions = db.Column(db.Boolean, default=False, nullable=False)
+    continuous_sneezing = db.Column(db.Boolean, default=False, nullable=False)
+    shivering = db.Column(db.Boolean, default=False, nullable=False)
+    chills = db.Column(db.Boolean, default=False, nullable=False)
+    joint_pain = db.Column(db.Boolean, default=False, nullable=False)
+    stomach_pain = db.Column(db.Boolean, default=False, nullable=False)
+    acidity = db.Column(db.Boolean, default=False, nullable=False)
+    ulcers_on_tongue = db.Column(db.Boolean, default=False, nullable=False)
+    muscle_wasting = db.Column(db.Boolean, default=False, nullable=False)
+    vomiting = db.Column(db.Boolean, default=False, nullable=False)
+    burning_micturition = db.Column(db.Boolean, default=False, nullable=False)
+    spotting_urination = db.Column(db.Boolean, default=False, nullable=False)
+    fatigue = db.Column(db.Boolean, default=False, nullable=False)
+    weight_gain = db.Column(db.Boolean, default=False, nullable=False)
+    anxiety = db.Column(db.Boolean, default=False, nullable=False)
+    cold_hands_and_feets = db.Column(db.Boolean, default=False, nullable=False)
+    mood_swings = db.Column(db.Boolean, default=False, nullable=False)
+    weight_loss = db.Column(db.Boolean, default=False, nullable=False)
+    restlessness = db.Column(db.Boolean, default=False, nullable=False)
+    lethargy = db.Column(db.Boolean, default=False, nullable=False)
+    patches_in_throat = db.Column(db.Boolean, default=False, nullable=False)
+    irregular_sugar_level = db.Column(db.Boolean, default=False, nullable=False)
+    cough = db.Column(db.Boolean, default=False, nullable=False)
+    high_fever = db.Column(db.Boolean, default=False, nullable=False)
+    sunken_eyes = db.Column(db.Boolean, default=False, nullable=False)
+    breathlessness = db.Column(db.Boolean, default=False, nullable=False)
+    sweating = db.Column(db.Boolean, default=False, nullable=False)
+    dehydration = db.Column(db.Boolean, default=False, nullable=False)
+    indigestion = db.Column(db.Boolean, default=False, nullable=False)
+    headache = db.Column(db.Boolean, default=False, nullable=False)
+    yellowish_skin = db.Column(db.Boolean, default=False, nullable=False)
+    dark_urine = db.Column(db.Boolean, default=False, nullable=False)
+    nausea = db.Column(db.Boolean, default=False, nullable=False)
+    loss_of_appetite = db.Column(db.Boolean, default=False, nullable=False)
+    pain_behind_the_eyes = db.Column(db.Boolean, default=False, nullable=False)
+    back_pain = db.Column(db.Boolean, default=False, nullable=False)
+    constipation = db.Column(db.Boolean, default=False, nullable=False)
+    abdominal_pain = db.Column(db.Boolean, default=False, nullable=False)
+    diarrhoea = db.Column(db.Boolean, default=False, nullable=False)
+    mild_fever = db.Column(db.Boolean, default=False, nullable=False)
+    yellow_urine = db.Column(db.Boolean, default=False, nullable=False)
+    yellowing_of_eyes = db.Column(db.Boolean, default=False, nullable=False)
+    acute_liver_failure = db.Column(db.Boolean, default=False, nullable=False)
+    fluid_overload = db.Column(db.Boolean, default=False, nullable=False)
+    swelling_of_stomach = db.Column(db.Boolean, default=False, nullable=False)
+    swelled_lymph_nodes = db.Column(db.Boolean, default=False, nullable=False)
+    malaise = db.Column(db.Boolean, default=False, nullable=False)
+    blurred_and_distorted_vision = db.Column(db.Boolean, default=False, nullable=False)
+    phlegm = db.Column(db.Boolean, default=False, nullable=False)
+    throat_irritation = db.Column(db.Boolean, default=False, nullable=False)
+    redness_of_eyes = db.Column(db.Boolean, default=False, nullable=False)
+    sinus_pressure = db.Column(db.Boolean, default=False, nullable=False)
+    runny_nose = db.Column(db.Boolean, default=False, nullable=False)
+    congestion = db.Column(db.Boolean, default=False, nullable=False)
+    chest_pain = db.Column(db.Boolean, default=False, nullable=False)
+    weakness_in_limbs = db.Column(db.Boolean, default=False, nullable=False)
+    fast_heart_rate = db.Column(db.Boolean, default=False, nullable=False)
+    pain_during_bowel_movements = db.Column(db.Boolean, default=False, nullable=False)
+    pain_in_anal_region = db.Column(db.Boolean, default=False, nullable=False)
+    bloody_stool = db.Column(db.Boolean, default=False, nullable=False)
+    irritation_in_anus = db.Column(db.Boolean, default=False, nullable=False)
+    neck_pain = db.Column(db.Boolean, default=False, nullable=False)
+    dizziness = db.Column(db.Boolean, default=False, nullable=False)
+    cramps = db.Column(db.Boolean, default=False, nullable=False)
+    bruising = db.Column(db.Boolean, default=False, nullable=False)
+    obesity = db.Column(db.Boolean, default=False, nullable=False)
+    swollen_legs = db.Column(db.Boolean, default=False, nullable=False)
+    swollen_blood_vessels = db.Column(db.Boolean, default=False, nullable=False)
+    puffy_face_and_eyes = db.Column(db.Boolean, default=False, nullable=False)
+    enlarged_thyroid = db.Column(db.Boolean, default=False, nullable=False)
+    brittle_nails = db.Column(db.Boolean, default=False, nullable=False)
+    swollen_extremeties = db.Column(db.Boolean, default=False, nullable=False)
+    excessive_hunger = db.Column(db.Boolean, default=False, nullable=False)
+    extra_marital_contacts = db.Column(db.Boolean, default=False, nullable=False)
+    drying_and_tingling_lips = db.Column(db.Boolean, default=False, nullable=False)
+    slurred_speech = db.Column(db.Boolean, default=False, nullable=False)
+    knee_pain = db.Column(db.Boolean, default=False, nullable=False)
+    hip_joint_pain = db.Column(db.Boolean, default=False, nullable=False)
+    muscle_weakness = db.Column(db.Boolean, default=False, nullable=False)
+    stiff_neck = db.Column(db.Boolean, default=False, nullable=False)
+    swelling_joints = db.Column(db.Boolean, default=False, nullable=False)
+    movement_stiffness = db.Column(db.Boolean, default=False, nullable=False)
+    spinning_movements = db.Column(db.Boolean, default=False, nullable=False)
+    loss_of_balance = db.Column(db.Boolean, default=False, nullable=False)
+    unsteadiness = db.Column(db.Boolean, default=False, nullable=False)
+    weakness_of_one_body_side = db.Column(db.Boolean, default=False, nullable=False)
+    loss_of_smell = db.Column(db.Boolean, default=False, nullable=False)
+    bladder_discomfort = db.Column(db.Boolean, default=False, nullable=False)
+    foul_smell_of_urine = db.Column(db.Boolean, default=False, nullable=False)
+    continuous_feel_of_urine = db.Column(db.Boolean, default=False, nullable=False)
+    passage_of_gases = db.Column(db.Boolean, default=False, nullable=False)
+    internal_itching = db.Column(db.Boolean, default=False, nullable=False)
+    toxic_look = db.Column(db.Boolean, default=False, nullable=False)
+    depression = db.Column(db.Boolean, default=False, nullable=False)
+    irritability = db.Column(db.Boolean, default=False, nullable=False)
+    muscle_pain = db.Column(db.Boolean, default=False, nullable=False)
+    altered_sensorium = db.Column(db.Boolean, default=False, nullable=False)
+    red_spots_over_body = db.Column(db.Boolean, default=False, nullable=False)
+    belly_pain = db.Column(db.Boolean, default=False, nullable=False)
+    abnormal_menstruation = db.Column(db.Boolean, default=False, nullable=False)
+    dischromic_patches = db.Column(db.Boolean, default=False, nullable=False)
+    watering_from_eyes = db.Column(db.Boolean, default=False, nullable=False)
+    increased_appetite = db.Column(db.Boolean, default=False, nullable=False)
+    polyuria = db.Column(db.Boolean, default=False, nullable=False)
+    family_history = db.Column(db.Boolean, default=False, nullable=False)
+    mucoid_sputum = db.Column(db.Boolean, default=False, nullable=False)
+    rusty_sputum = db.Column(db.Boolean, default=False, nullable=False)
+    lack_of_concentration = db.Column(db.Boolean, default=False, nullable=False)
+    visual_disturbances = db.Column(db.Boolean, default=False, nullable=False)
+    receiving_blood_transfusion = db.Column(db.Boolean, default=False, nullable=False)
+    receiving_unsterile_injections = db.Column(db.Boolean, default=False, nullable=False)
+    coma = db.Column(db.Boolean, default=False, nullable=False)
+    stomach_bleeding = db.Column(db.Boolean, default=False, nullable=False)
+    distention_of_abdomen = db.Column(db.Boolean, default=False, nullable=False)
+    history_of_alcohol_consumption = db.Column(db.Boolean, default=False, nullable=False)
+    fluid_overload = db.Column(db.Boolean, default=False, nullable=False)
+    blood_in_sputum = db.Column(db.Boolean, default=False, nullable=False)
+    prominent_veins_on_calf = db.Column(db.Boolean, default=False, nullable=False)
+    palpitations = db.Column(db.Boolean, default=False, nullable=False)
+    painful_walking = db.Column(db.Boolean, default=False, nullable=False)
+    pus_filled_pimples = db.Column(db.Boolean, default=False, nullable=False)
+    skin_peeling = db.Column(db.Boolean, default=False, nullable=False)
+    silver_like_dusting = db.Column(db.Boolean, default=False, nullable=False)
+    small_dents_in_nails = db.Column(db.Boolean, default=False, nullable=False)
+    inflammatory_nails = db.Column(db.Boolean, default=False, nullable=False)
+    blister = db.Column(db.Boolean, default=False, nullable=False)
+    red_sore_around_nose = db.Column(db.Boolean, default=False, nullable=False)
+    red_sore_around_nose = db.Column(db.Boolean, default=False, nullable=False)
+
 
 # ****** FORMS *******
 
@@ -176,7 +314,7 @@ def register():
         flash("You have successfully registered! Please login to continue.")
         return redirect(url_for('userlogin'))
     
-    insurances = Hospital.query.all()
+    insurances = Hospital.query.with_entities(Hospital.accepted_insurance).distinct().all()
     return render_template("register.html", form=form, insurances=insurances)
 
 @app.route("/doctorRegister", methods=['GET','POST'])
@@ -184,8 +322,7 @@ def doctorRegister():
     form = Doc_RegisterForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = User(username=form.username.data, password=hashed_password, name=form.name.data, dob=form.dob.data, gender=form.gender.data, is_doctor = True)
-
+        new_user = User(username=form.username.data, password=hashed_password, name=form.name.data, dob=form.dob.data, gender=form.gender.data, is_doctor = True, insurance = "Doctor Insurance")
         db.session.add(new_user)
         db.session.commit()
         flash("You have successfully registered! Please login to continue.")
@@ -353,7 +490,9 @@ def appointment():
         db.session.commit()
         return redirect(url_for("myappointments"))
     hospitals = Hospital.query.all()
-    return render_template("appointment.html", form=form, hospitals=hospitals)
+    slots = Appointment.query.group_by(Appointment.slot).order_by(func.count().desc()).all()
+    max_booked_slot = slots[0].slot if slots else None
+    return render_template("appointment.html", form=form, hospitals=hospitals, max_booked_slot=max_booked_slot)
 
 
 
@@ -364,6 +503,13 @@ def delete_appointment(id):
     db.session.delete(appointment)
     db.session.commit()
     return redirect(url_for('myappointments'))
+
+@app.route('/preconsult/<int:id>', methods=['POST','GET'])
+@login_required
+def preconsult(id):
+    if request.method == "GET":
+        symptoms = ['itching', 'skin_rash', 'nodal_skin_eruptions', 'continuous_sneezing', 'shivering', 'chills', 'joint_pain', 'stomach_pain', 'acidity', 'ulcers_on_tongue', 'muscle_wasting', 'vomiting', 'burning_micturition', 'spotting_ urination', 'fatigue', 'weight_gain', 'anxiety', 'cold_hands_and_feets', 'mood_swings', 'weight_loss', 'restlessness', 'lethargy', 'patches_in_throat', 'irregular_sugar_level', 'cough', 'high_fever', 'sunken_eyes', 'breathlessness', 'sweating', 'dehydration', 'indigestion', 'headache', 'yellowish_skin', 'dark_urine', 'nausea', 'loss_of_appetite', 'pain_behind_the_eyes', 'back_pain', 'constipation', 'abdominal_pain', 'diarrhoea', 'mild_fever', 'yellow_urine', 'yellowing_of_eyes', 'acute_liver_failure', 'fluid_overload', 'swelling_of_stomach', 'swelled_lymph_nodes', 'malaise', 'blurred_and_distorted_vision', 'phlegm', 'throat_irritation', 'redness_of_eyes', 'sinus_pressure', 'runny_nose', 'congestion', 'chest_pain', 'weakness_in_limbs', 'fast_heart_rate', 'pain_during_bowel_movements', 'pain_in_anal_region', 'bloody_stool', 'irritation_in_anus', 'neck_pain', 'dizziness', 'cramps', 'bruising', 'obesity', 'swollen_legs', 'swollen_blood_vessels', 'puffy_face_and_eyes', 'enlarged_thyroid', 'brittle_nails', 'swollen_extremeties', 'excessive_hunger', 'extra_marital_contacts', 'drying_and_tingling_lips', 'slurred_speech', 'knee_pain', 'hip_joint_pain', 'muscle_weakness', 'stiff_neck', 'swelling_joints', 'movement_stiffness', 'spinning_movements', 'loss_of_balance', 'unsteadiness', 'weakness_of_one_body_side', 'loss_of_smell', 'bladder_discomfort', 'foul_smell_of urine', 'continuous_feel_of_urine', 'passage_of_gases', 'internal_itching', 'toxic_look_(typhos)', 'depression', 'irritability', 'muscle_pain', 'altered_sensorium', 'red_spots_over_body', 'belly_pain', 'abnormal_menstruation', 'dischromic _patches', 'watering_from_eyes', 'increased_appetite', 'polyuria', 'family_history', 'mucoid_sputum', 'rusty_sputum', 'lack_of_concentration', 'visual_disturbances', 'receiving_blood_transfusion', 'receiving_unsterile_injections', 'coma', 'stomach_bleeding', 'distention_of_abdomen', 'history_of_alcohol_consumption', 'fluid_overload.1', 'blood_in_sputum', 'prominent_veins_on_calf', 'palpitations', 'painful_walking', 'pus_filled_pimples','skin_peeling','silver_like_dusting','small_dents_in_nails','inflammatory_nails','blister','red_sore_around_nose','red_sore_around_nose']
+        return render_template('preconsult.html', symptoms=symptoms)
 
 @app.route('/markDone/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -451,6 +597,17 @@ def getDriver():
         driver_list.append(driver_dict)
     print(jsonify(driver_list))
     return jsonify(driver_list)
+
+@app.route("/videostart", methods = ['POST'])
+def videostart():
+    request_json = request.get_json()
+    video_id = request_json['video_id']
+    vc = VideoCall(video_id=video_id)
+    db.session.add(vc)
+    db.session.commit()
+    return jsonify({
+        'status': 200
+    })
 
 if __name__ == "__main__":
     with app.app_context():

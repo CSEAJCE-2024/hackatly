@@ -15,7 +15,10 @@ Appointment
                 <div class="col-xs-4 mb-3">
                     {{ form.docDept(class = "form-control") }}
                 </div>
-                <h5>{{ form.slot.label }}</h5> 
+                <h5>{{ form.slot.label }}</h5>
+                {% if max_booked_slot %}
+                <p class="text-warning" >Peak Booking Slot / Hours: <strong>{{ max_booked_slot.capitalize() }} {% if max_booked_slot == 'morning' %}(09am - 12pm){% endif %}{% if max_booked_slot == 'afternoon' %}(05pm - 04pm){% endif %}{% if max_booked_slot == 'evening' %}(05pm - 08pm){% endif %}</strong></p>
+                {% endif %}
                 <div class="col-xs-4 mb-3">
                     {{ form.slot(class = "form-control")}}
                 </div>
@@ -23,6 +26,7 @@ Appointment
                 <div class="col-xs-4 mb-3">
                 {{ form.date(class="form-control")}}
                 </div>
+                <h5>Hospital</h5>
                 <div class="col-xs-4 mb-3">
                     <select name="hospital_id" id="hospital_id" required>
                         <option value="">--Select a hospital--</option>
