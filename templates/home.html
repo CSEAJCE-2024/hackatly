@@ -77,6 +77,9 @@ User - Home
                 </div>
           </div>
         {% else %}
+        <div class="d-flex justify-content-end">
+          <a href="/register" class="btn btn-primary">Add Family Members</a>
+        </div>
             <h1>Hello! {{ current_user.name }}</h1>
             <div class="container py-5">
               <div class="container p-3">

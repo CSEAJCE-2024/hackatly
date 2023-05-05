@@ -29,6 +29,7 @@ User - Appointments
                 <th scope="col">Slot</th>
                 <!-- <th scope="col">Status</th> -->
                 <th scope="col">Actions</th>
+                <th scope="col">Online Consultation</th>
               </tr>
             </thead>
             <tbody>
@@ -80,6 +81,7 @@ User - Appointments
                       <a  href="{{ url_for('myappointments') }}"><i class="fas fa-minus fa-fw me-3"></i></a>
                     </span>
                   </td>
+                  <td><a href="https://hackatly-doctor-consult.vercel.app" _target="blank" class="btn btn-primary">Start</a></td>
                 </tr> 
               {% endfor %}
             </tbody>
@@ -97,6 +99,7 @@ User - Appointments
                 <th scope="col">Appointment Slot</th>
                 <th scope="col">Hospital Name</th>
                 <th scope="col">Actions</th>
+                <th scope="col">Online Consultation</th>
                 <!-- <th scope="col">Avg. Price</th> -->
               </tr>
             </thead>
@@ -110,6 +113,7 @@ User - Appointments
                   <td>
                     <a href="/delete_appointment/{{ appointment.id }}"><i class="fas fa-trash fa-fw me-3"></i></a> 
                   </td>
+                  <td><a href="https://hackatly-doctor-consult.vercel.app" _target="blank" class="btn btn-primary">Start</a></td>
                 </tr> 
               {% endfor %}
             </tbody>
