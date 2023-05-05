@@ -47,10 +47,11 @@ def handle_emergency(message):
     breathing_difficulty = types.InlineKeyboardButton('Breathing Difficulty', callback_data='breathing')
     heartache = types.InlineKeyboardButton('Heart Ache', callback_data='heart')
     stomach_pain = types.InlineKeyboardButton('Stomach Pain', callback_data='stomach')
+    accident = types.InlineKeyboardButton('Road Accident', callback_data='accident')
     others = types.InlineKeyboardButton('Others....', callback_data='others')
 
     # Add emergency options to the keyboard
-    keyboard.add(poison, breathing_difficulty, heartache, stomach_pain, others)
+    keyboard.add(poison, breathing_difficulty, heartache, stomach_pain, accident, others)
 
     bot.send_message(message.chat.id, 'Please select the type of medical emergency:', reply_markup=keyboard)
 
@@ -101,13 +102,15 @@ def get_name(message):
         
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callback(call):
-    if call.data in ['poison', 'breathing', 'heart', 'stomach', 'others']:
+    global user_chatid 
+    if call.data in ['poison', 'breathing', 'heart', 'stomach', 'accident', 'others']:
         # Request user's location
         markup = types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
         location_button = types.KeyboardButton(text="Send Location", request_location=True)
         markup.add(location_button)
 
         bot.send_message(call.message.chat.id, "Please share your location:", reply_markup=markup)
+        user_chatid = call.message.chat.id
         bot.register_next_step_handler(call.message, getDriver)
         # @bot.message_handler(content_types=['location'])
 
@@ -127,6 +130,7 @@ def handle_callback(call):
             bot.send_message(call.message.chat.id, "Alert Removed")
 
 def driver_avail(chat_id):
+    bot.send_message(user_chatid, "Emergency services will soon be at your location. Please don't leave your current location ❗❗")
     bot.send_message(chat_id, "You responded with yes\nPlease contact the patient on: 9778130551\n\n Nearest Hospital: Central Medical Center")
 
 
