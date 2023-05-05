@@ -7,6 +7,7 @@ from wtforms import *#form creation
 from wtforms.validators import *
 from flask_bcrypt import Bcrypt
 from datetime import datetime, date
+from sqlalchemy.sql import func
 
 app = Flask(__name__)
 app.debug = True
@@ -352,7 +353,9 @@ def appointment():
         db.session.commit()
         return redirect(url_for("myappointments"))
     hospitals = Hospital.query.all()
-    return render_template("appointment.html", form=form, hospitals=hospitals)
+    slots = Appointment.query.group_by(Appointment.slot).order_by(func.count().desc()).all()
+    max_booked_slot = slots[0].slot if slots else None
+    return render_template("appointment.html", form=form, hospitals=hospitals, max_booked_slot=max_booked_slot)
 
 
 
