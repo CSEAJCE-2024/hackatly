@@ -24,7 +24,7 @@ def start(message):
     appointment = types.InlineKeyboardButton("Appointment 🩺", url='http://127.0.0.1:5000/appointment')
     keyboard.add(emergency, hospitals, appointment)
 
-    bot.send_message(message.chat.id, "Welcome to Life Bot!😊 \n\n I am here to help you with your emergency needs and services.⚕️🩸 \n\n What may I assist you with?", reply_markup=keyboard)
+    bot.send_message(message.chat.id, f"Welcome to Life Bot!😊 \n\n I am here to help you with your emergency needs and services.⚕️🩸 \n\n What may I assist you with?\n\nYour Telegram ID: {message.chat.id}", reply_markup=keyboard)
 
 
 def handle_hospitals(message):
@@ -127,7 +127,7 @@ def handle_callback(call):
             bot.send_message(call.message.chat.id, "Alert Removed")
 
 def driver_avail(chat_id):
-    bot.send_message(chat_id, "You responded with yes")
+    bot.send_message(chat_id, "You responded with yes\nPlease contact the patient on: 9778130551")
 
 
 
