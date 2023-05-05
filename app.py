@@ -349,7 +349,8 @@ def mypatients():
 def viewpatient(id):
     if current_user.is_doctor:
         patient = User.query.filter_by(id = id).first()
-        return render_template('viewpatient.html', patient = patient)
+        form = MedicalHistoryForm(obj=patient)
+        return render_template('viewpatient.html', patient = patient, form=form)
     else:
         return redirect(url_for('home'))
 
