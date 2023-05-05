@@ -176,7 +176,7 @@ def register():
         flash("You have successfully registered! Please login to continue.")
         return redirect(url_for('userlogin'))
     
-    insurances = Hospital.query.all()
+    insurances = Hospital.query.with_entities(Hospital.accepted_insurance).distinct().all()
     return render_template("register.html", form=form, insurances=insurances)
 
 @app.route("/doctorRegister", methods=['GET','POST'])
