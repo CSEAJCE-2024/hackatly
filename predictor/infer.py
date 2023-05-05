@@ -3,7 +3,7 @@ import numpy as np
 from joblib import load
 
 
-if __name__ == '__main__':
+def predict_disease(symptoms):
     # Set value of 1 corresponding to the symptom
     symptoms = {'itching': 1, 'skin_rash': 1, 'nodal_skin_eruptions': 0, 'continuous_sneezing': 0,
                 'shivering': 0, 'chills': 0, 'joint_pain': 0, 'stomach_pain': 0, 'acidity': 0, 'ulcers_on_tongue': 0,
@@ -37,6 +37,6 @@ if __name__ == '__main__':
     df_test.loc[0] = np.array(list(symptoms.values()))
 
     # Load pre-trained model
-    clf = load(str("./saved_model/random_forest.joblib"))
+    clf = load(str("predictor/saved_model/random_forest.joblib"))
     result = clf.predict(df_test)
-    print(f"Predicted Disease: {result}")
+    return result[0]
