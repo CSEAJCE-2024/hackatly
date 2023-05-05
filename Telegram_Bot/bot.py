@@ -127,7 +127,7 @@ def handle_callback(call):
             bot.send_message(call.message.chat.id, "Alert Removed")
 
 def driver_avail(chat_id):
-    bot.send_message(chat_id, "You responded with yes")
+    bot.send_message(chat_id, "You responded with yes\nPlease contact the patient on: 9778130551")
 
 
 
